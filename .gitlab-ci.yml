@@ -1,0 +1,5 @@
+variables:
+  GIT_STRATEGY: clone
+job1:
+  script: "source /etc/profile.d/maven.sh; [ -e pom.xml ] && mvn clean install ; true "
+  tags: ['2020']
