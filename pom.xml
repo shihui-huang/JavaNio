@@ -1,7 +1,7 @@
 <project>
    <modelVersion>4.0.0</modelVersion>
    <groupId>eu.telecomsudparis.csc4509</groupId>
-   <artifactId>csc4509-dm-prenom1-nom1-prenom2-nom2</artifactId>
+   <artifactId>csc4509-dm-Shihui-HUANG</artifactId>
    <version>1.0-SNAPSHOT</version>
    <properties>
        <maven.compiler.target>1.8</maven.compiler.target>
