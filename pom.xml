@@ -7,6 +7,18 @@
        <maven.compiler.target>1.8</maven.compiler.target>
        <maven.compiler.source>1.8</maven.compiler.source>
    </properties>
+    <repositories>
+        <repository>
+            <id>csc4509-dm-stable</id>
+            <name>CSC4509, DM library, stable</name>
+            <url>http://www-inf.telecom-sudparis.eu/COURS/CSC4509/maven-repository/stable/</url>
+        </repository>
+        <repository>
+            <id>csc4509-dm-snapshot</id>
+            <name>CSC4509, DM library, snapshot</name>
+            <url>http://www-inf.telecom-sudparis.eu/COURS/CSC4509/maven-repository/snapshot/</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -19,7 +31,11 @@
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
         </dependency>
-
+        <dependency>
+            <groupId>eu.telecomsudparis.csc4509</groupId>
+            <artifactId>csc4509-dm-TestTCP</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
-
 </project>
