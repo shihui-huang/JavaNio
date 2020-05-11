@@ -1,7 +1,6 @@
 package tsp.csc4509.dm.tcp;
 
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -72,8 +71,27 @@ public class TcpSocket  implements AutoCloseable {
 	 *          toutes les exceptions d'entrées/sorties.
 	 */
 	public int sendObject(final Serializable s) throws IOException {
-		// TODO Etape 3
-		return 0;
+		// sérialiser l'objet
+		ByteArrayOutputStream bo = new ByteArrayOutputStream();
+		ObjectOutputStream oo = new ObjectOutputStream(bo);
+		oo.writeObject(s);
+		oo.close();
+
+		// calculer la taille de l'objet sérialisé
+		int size = bo.size();
+
+		// envoyer un entier contenant cette taille
+		sendSize(size);
+
+		// envoyer l'objet sérialisé
+		ByteBuffer buffer = ByteBuffer.allocate(size);
+		buffer.put(bo.toByteArray());
+		bo.close();
+
+		buffer.flip();
+		sendBuffer(buffer);
+
+		return size;
 	}
 	
 	
@@ -141,9 +159,25 @@ public class TcpSocket  implements AutoCloseable {
 	 *        l'exception levée si l'objet reçu est d'une classe inconnue de notre programme.
 	 */
 	public Serializable receiveObject() throws IOException, ClassNotFoundException {
-		// TODO Etape 3.
-		
-		return null;
+		//recevoir un entier qui contient la taille de l'objet sérialisé ;
+			int size = receiveSize();
+
+		//allouer un ByteBuffer faisant exactement cette taille ;
+			ByteBuffer buffer = ByteBuffer.allocate(size);
+
+		//recevoir des octets du réseau jusqu'à remplir ce buffer ;
+		receiveBuffer(buffer);
+
+
+		//extraire les données de ce buffer et les désérialiser.
+		Serializable reference = null;
+		ByteArrayInputStream bi = new ByteArrayInputStream(buffer.array());
+		ObjectInputStream oi = new ObjectInputStream(bi);
+		reference = (Serializable) oi.readObject();
+
+		oi.close();
+		bi.close();
+		return reference;
 	}
 	
 	@Override
