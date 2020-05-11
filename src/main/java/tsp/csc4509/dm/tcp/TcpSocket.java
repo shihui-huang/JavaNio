@@ -105,7 +105,14 @@ public class TcpSocket  implements AutoCloseable {
 	 */
 	public int receiveBuffer(ByteBuffer buffer) throws IOException {
 		buffer.clear();
-		return rwChan.read(buffer);
+		int buf;
+		int sommes = 0;
+		buf = rwChan.read(buffer);
+		while(buf > 0){
+			sommes =+ buf;
+			buf = rwChan.read(buffer);
+		}
+		return sommes;
 
 	}
 	
