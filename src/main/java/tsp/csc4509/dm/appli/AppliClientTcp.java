@@ -3,6 +3,7 @@ package tsp.csc4509.dm.appli;
 import tsp.csc4509.dm.tcp.TcpSocket;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 
 
@@ -56,9 +57,13 @@ public class AppliClientTcp {
 		tcpSocket.sendSize(40);
 
 		//TODO  lire et afficher l'entier que le serveur nous a envoyé en echo
-		System.out.println( tcpSocket.receiveSize());
-		tcpSocket.close();
-		
+//		System.out.println( tcpSocket.receiveSize());
+//		tcpSocket.close();
+
+		//envoie un objet à une application serveur.
+		Person mike = new Person("mike",20);
+		tcpSocket.sendObject(mike);
+
 	}
 	
 

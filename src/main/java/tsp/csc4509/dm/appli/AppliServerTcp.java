@@ -33,6 +33,11 @@ public class AppliServerTcp {
 		TcpSocket tcpSocket = tcpServer.acceptClient();
 		
 		// TODO renvoyer en echo tout ce que le client éccrit jusqu'à sa déconnexion.
+
+		//receive un object
+		Person person;
+		person = (Person) tcpSocket.receiveObject();
+		System.out.println(person.getName() == "mike");
 	}
 	
 	
