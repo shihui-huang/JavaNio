@@ -98,13 +98,45 @@ public class TestTcpSocket {
 		
 		assertTrue("Données reçus identiques aux données envoyées", compareFile("./tmp/recu.txt", "./data/fichierTemoin.txt"));
 	}
-	
-	
-	@Ignore
+
+
+	// test unitaire de la méthode receiveBuffer()
+	// On compare  le fichier émis par le client et le ficher recu par serveur.
 	@Test
 	public void testReceiveBuffer() throws Exception {
-		// TODO Etape 2 : test unitaire de la méthode receiveBuffer().
-		// TODO penser à retirer le @Ignore une fois le test écrit.
+		if (LOG_ON && TEST.isInfoEnabled()) {
+			TEST.info("[TestTcpSocket::testReceiveBuffer] -> test de recoit d'un message avec un client");
+		}
+
+		// lancement d'un serveur de test TCP
+		tcpTestTools.serverSendFileStart(40001, "./data/fichierTemoin.txt");
+
+		// création d'un client
+		TcpSocket client = new TcpSocket("localhost", 40001);
+
+		FileOutputStream fout = new FileOutputStream("./tmp/envoye.txt");
+		FileChannel fcout = fout.getChannel();
+		ByteBuffer buffer = ByteBuffer.allocate(BUFFERSIZE);
+
+		//receive fichier
+		int write;
+		do {
+			buffer.clear();
+			client.receiveBuffer(buffer);
+			buffer.flip();
+			write = fcout.write(buffer);
+		} while (write == BUFFERSIZE);
+
+		client.close();
+
+		Thread.sleep(1000); // on laisse un peu de temps au serveur.
+
+		tcpTestTools.serverSendFileStop();
+		fout.close();
+
+		assertTrue("Données reçus identiques aux données envoyées", compareFile("./tmp/envoye.txt", "./data/fichierTemoin.txt"));
+
+
 	}
 	
 	
@@ -117,11 +149,9 @@ public class TestTcpSocket {
 	// On lit la trame reçue par le serveur dans le fichier
 	// On en extrait l'objet serialisé, on désérialise l'objet.
 	// On compare l'objet reçu avec l'objet émis
-	@Ignore
 	@Test
 	public void testSendObject() throws Exception {
-		// TODO Etape 3:  penser à retirer le @Ignore une fois la méthode sendObject() écrite.
-		
+
 		if (LOG_ON && TEST.isInfoEnabled()) {
 			TEST.info("[TestTcpSocket::testSendObject] ->  test d'envoi d'un objet avec un client");
 		}
@@ -167,14 +197,60 @@ public class TestTcpSocket {
 			
 		assertTrue("Objet reçu identique à l'objet envoyé", str.equals(strRecu));
 	}
-	
-	
-	
-	@Ignore
+
+
+
+	// test unitaire de la méthode receiveObject()
+	// On compare l'objet reçu avec l'objet émis
 	@Test
 	public void testReceiveObject() throws Exception {
-		// TODO Etape 3 : test unitaire de la méthode receiveObject().
-		// TODO penser à retirer le @Ignore une fois le test écrit.
+
+		if (LOG_ON && TEST.isInfoEnabled()) {
+			TEST.info("[TestTcpSocket::testReveiceObject] ->  test de réception d'un objet avec un client");
+		}
+		// création d'un objet:
+		String str = "L'objet de test sera cette chaîne de caractères";
+
+		FileOutputStream fout = new FileOutputStream("./tmp/objet.data");
+		FileChannel fcout = fout.getChannel();
+
+		// Sérialisation de l'objet
+		ByteArrayOutputStream bo = new ByteArrayOutputStream();
+		ObjectOutputStream oo = new ObjectOutputStream(bo);
+		oo.writeObject(str);
+		oo.close();
+
+		// send size
+		ByteBuffer bufferSize = ByteBuffer.allocate(Integer.SIZE / Byte.SIZE);
+		bufferSize.putInt(bo.size());
+		bufferSize.flip();
+		fcout.write(bufferSize);
+
+		// send buffer
+		ByteBuffer buffer = ByteBuffer.allocate(bo.size());
+		buffer.put(bo.toByteArray());
+		buffer.flip();
+		fcout.write(buffer);
+
+		bo.close();
+		fout.close();
+		fout.close();
+
+		// lancement d'un serveur de test TCP
+		tcpTestTools.serverSendFileStart(40001, "./tmp/objet.data");
+
+		// création d'un client
+		TcpSocket client = new TcpSocket("localhost", 40001);
+
+
+		// test unitaire de la méthode receiveObject()
+		String strRecev = (String) client.receiveObject();
+		client.close();
+		Thread.sleep(1000); // on laisse un peu de temps au serveur.
+		tcpTestTools.serverSendFileStop();
+
+
+		assertTrue("Objet reçu identique à l'objet envoyé", str.equals(strRecev));
 		
 	}
 	
