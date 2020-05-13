@@ -143,6 +143,7 @@ public class TcpSocket  implements AutoCloseable {
 	public int receiveSize() throws IOException {
 		ByteBuffer buffer = ByteBuffer.allocate(Integer.SIZE / Byte.SIZE);
 		rwChan.read(buffer);
+		buffer.flip();
 		return buffer.getInt();
 
 	}
