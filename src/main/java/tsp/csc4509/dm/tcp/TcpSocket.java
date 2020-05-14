@@ -57,7 +57,6 @@ public class TcpSocket  implements AutoCloseable {
 	 *                  toutes les exceptions d'entrées/sorties.
 	 */
 	public int sendBuffer(ByteBuffer buffer) throws IOException {	
-		buffer.flip();
 		return rwChan.write(buffer);
 	}
 	
