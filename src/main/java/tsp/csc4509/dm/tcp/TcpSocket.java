@@ -87,6 +87,7 @@ public class TcpSocket  implements AutoCloseable {
 		buffer.put(bo.toByteArray());
 		bo.close();
 
+		buffer.flip();
 		sendBuffer(buffer);
 
 		return size;
