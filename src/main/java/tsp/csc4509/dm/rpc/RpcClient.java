@@ -78,7 +78,22 @@ public class RpcClient {
 	 *                  l'exception sur le serveur RPC ne nous envoie pas un RpcReply. 
 	 */
 	public RpcClient(final String serverHost, final int serverPort, final String rpcId) throws IOException, ClassNotFoundException {
-		// TODO Etape 3.3
+		this.rpcParam = rpcParam;
+
+//	    connexion TCP au serveur « serverHost:serverPort » ;
+		TcpSocket tcpSocket = new TcpSocket(serverHost, serverPort);
+
+//		construction d'un objet RpcRequest en utilisant les paramètres du constructeur ;
+		RpcRequest rpcRequest = new RpcRequest(rpcId);
+
+//		envoi de cet objet au serveur ;
+		tcpSocket.sendObject(rpcRequest);
+
+//		réception de la réponse, qui est un objet de la classe  RpcReply ;
+		rpcReply = (RpcReply) tcpSocket.receiveObject();
+
+//		fermeture de la connexion avec le serveur.
+		tcpSocket.close();
 	}
 
 
