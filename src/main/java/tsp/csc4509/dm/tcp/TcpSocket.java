@@ -56,7 +56,8 @@ public class TcpSocket  implements AutoCloseable {
 	 * @throws IOException
 	 *                  toutes les exceptions d'entrées/sorties.
 	 */
-	public int sendBuffer(ByteBuffer buffer) throws IOException {	
+	public int sendBuffer(ByteBuffer buffer) throws IOException {
+		buffer.flip();
 		return rwChan.write(buffer);
 	}
 	
@@ -87,7 +88,6 @@ public class TcpSocket  implements AutoCloseable {
 		buffer.put(bo.toByteArray());
 		bo.close();
 
-		buffer.flip();
 		sendBuffer(buffer);
 
 		return size;
@@ -132,7 +132,7 @@ public class TcpSocket  implements AutoCloseable {
 		return sommes;
 
 	}
-	
+
 	/**
 	 * Reçoit un entier sur la connexion TCP.
 	 * @return

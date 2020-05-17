@@ -83,7 +83,7 @@ public class TestTcpSocket {
 		do {
 			buffer.clear();
 			lu = fcin.read(buffer);
-			buffer.flip();
+//			buffer.flip();
 			client.sendBuffer(buffer);
 		} while (lu == BUFFERSIZE);
 		client.close(); // attention, la lecture de l'autre coté ne débloque que
