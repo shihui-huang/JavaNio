@@ -37,7 +37,13 @@ public enum RpcType {
 	 * service qui renvoie la liste des services implémentés pour le RPC COMPUTE.
 	 */
 	COMPUTELIST(String[].class, () -> (RpcParamList.getRpcParamList())),
-	
+
+	/**
+	 * service qui renvoie le nombre de coeurs de la machine du serveur
+	 */
+	NBCORES(Integer.class, () -> (Runtime.getRuntime().availableProcessors() )),
+
+
 	//******************************************************************************
 	// RPC avec paramètre: constructeur avec un paramètre
 	//   une instance de l'interface fonctionnelle Function<RpcParam, Serializable>
@@ -45,8 +51,8 @@ public enum RpcType {
 	 * service qui réalise un calcul avec résultat déporté sur le serveur RPC.
 	 */
 	COMPUTE((RpcParam p)  -> (p.compute()));
-	
-	
+
+
 	
 	/**
 	 * référence sur l'instance implémentant la méthode Serializable get() pour
