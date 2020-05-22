@@ -101,7 +101,7 @@ public class RpcClient {
 	 */
 	public Serializable getResult() {
 		RpcStatus status = this.rpcReply.getStatus();
-		return status== RpcStatus.RPC_REPLY_OK ? this.rpcReply.getResult() : null;
+		return status == RpcStatus.RPC_REPLY_OK ? this.rpcReply.getResult() : null;
 	}
 
 }

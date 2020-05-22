@@ -14,7 +14,7 @@ public class TcpServer  implements AutoCloseable {
 	/**
 	 * le canal d'écoute du serveur.
 	 */
-	private ServerSocketChannel listenChannel;
+	private final ServerSocketChannel listenChannel;
 	
 	
 	/**
@@ -26,8 +26,8 @@ public class TcpServer  implements AutoCloseable {
 	 */
 	public TcpServer(final int port) throws IOException {
 		InetSocketAddress servAddr = new InetSocketAddress(port);
-		this.listenChannel = ServerSocketChannel.open();
-		this.listenChannel.bind(servAddr);
+		listenChannel = ServerSocketChannel.open();
+		listenChannel.bind(servAddr);
 		
 	}
 	
@@ -45,7 +45,7 @@ public class TcpServer  implements AutoCloseable {
 
 	@Override
 	public void close() throws Exception {
-		this.listenChannel.close();
+		listenChannel.close();
 	}
 
 }
