@@ -26,17 +26,14 @@ public enum RpcType {
 	/**
 	 * service qui renvoie la charge moyenne de la machine où tourne le serveur RCP.
 	 */
-	AVERAGELOAD(Double.class, new Supplier<Serializable>() {
-		@Override
-		public Serializable get() {
-			return new Double(ManagementFactory.getOperatingSystemMXBean().getSystemLoadAverage());
-		}
+	AVERAGELOAD(Double.class, () -> {
+		return new Double(ManagementFactory.getOperatingSystemMXBean().getSystemLoadAverage());
 	}),
 	// exemples avec code de la méthode fournie par une expression lambda.
 	/**
 	 * service qui renvoie la liste des services implémentés pour le RPC COMPUTE.
 	 */
-	COMPUTELIST(String[].class, () -> (RpcParamList.getRpcParamList())),
+	COMPUTELIST(String[].class, RpcParamList::getRpcParamList),
 
 	/**
 	 * service qui renvoie le nombre de coeurs de la machine du serveur
@@ -50,7 +47,7 @@ public enum RpcType {
 	/**
 	 * service qui réalise un calcul avec résultat déporté sur le serveur RPC.
 	 */
-	COMPUTE((RpcParam p)  -> (p.compute()));
+	COMPUTE(RpcParam::compute);
 
 
 	

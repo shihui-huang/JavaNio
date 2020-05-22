@@ -16,7 +16,7 @@ public class MandelbrotParam implements Serializable,RpcParam {
 
     @Override
     public Class<? extends Serializable> getResultClass() {
-        return new MandelbrotParam(coordSection).getClass();
+        return MandelbrotParam.class;
     }
 
     @Override

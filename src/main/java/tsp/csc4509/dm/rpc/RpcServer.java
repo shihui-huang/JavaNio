@@ -37,7 +37,7 @@ public class RpcServer {
 			Serializable receiveRequest = tcpSocket.receiveObject();
 
 //		vérifier que c'est un objet RpcRequest
-			if(receiveRequest instanceof  RpcRequest){
+			if(receiveRequest instanceof RpcRequest){
 
 //		retrouver la valeur du  RpcType à partir de l'« id » de cette requête.
 
@@ -83,7 +83,7 @@ public class RpcServer {
 					/*
 					Si un client envoie un « id » qui ne correspond à aucune valeur de l'énumération, cette instruction lève l'exception  IllegalArgumentException.
 					Il ne faut pas stopper le serveur à cause des requêtes qui lèvent une exception.
-					Vous devez donc attraper toutes les exceptions et renvoyer au client une « RpcReply » avec le status fixé à  RPC_REPLY_BAD_REQUEST ;
+					Vous devez donc attraper toutes les exceptions et renvoyer au client une « RpcReply » avec le status fixé à  RPC_REPLY_BAD_REQUEST
 					 */
 
 					rpcReply = new RpcReply(RpcStatus.RPC_REPLY_BAD_REQUEST, null, null);

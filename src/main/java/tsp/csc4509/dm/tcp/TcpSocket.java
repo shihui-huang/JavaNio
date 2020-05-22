@@ -20,7 +20,7 @@ public class TcpSocket  implements AutoCloseable {
 	/**
 	 * un canal TCP connecté (soit par la connexion coté client, soit par l'accept coté serveur)
 	 */
-	private SocketChannel rwChan = null;
+	private SocketChannel rwChan;
 	
 	
 	/**
@@ -126,7 +126,7 @@ public class TcpSocket  implements AutoCloseable {
 		int sommes = 0;
 		buf = rwChan.read(buffer);
 		while(buf > 0){
-			sommes =+ buf;
+			sommes += buf;
 			buf = rwChan.read(buffer);
 		}
 		return sommes;
@@ -159,7 +159,7 @@ public class TcpSocket  implements AutoCloseable {
 	 *        l'exception levée si l'objet reçu est d'une classe inconnue de notre programme.
 	 */
 	public Serializable receiveObject() throws IOException, ClassNotFoundException {
-		//recevoir un entier qui contient la taille de l'objet sérialisé ;
+		//recevoir un entier qui contient la taille de l'objet sérialisé
 			int size = receiveSize();
 
 		//allouer un ByteBuffer faisant exactement cette taille
@@ -170,7 +170,7 @@ public class TcpSocket  implements AutoCloseable {
 
 
 		//extraire les données de ce buffer et les désérialiser
-		Serializable reference = null;
+		Serializable reference;
 		ByteArrayInputStream bi = new ByteArrayInputStream(buffer.array());
 		ObjectInputStream oi = new ObjectInputStream(bi);
 		reference = (Serializable) oi.readObject();

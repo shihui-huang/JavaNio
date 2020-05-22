@@ -4,8 +4,6 @@ package tsp.csc4509.dm.appli;
 import tsp.csc4509.dm.tcp.TcpServer;
 import tsp.csc4509.dm.tcp.TcpSocket;
 
-import java.io.IOException;
-
 public class AppliServerTcp {
 	
 	/**

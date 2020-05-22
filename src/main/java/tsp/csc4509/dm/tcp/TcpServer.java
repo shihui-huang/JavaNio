@@ -7,7 +7,7 @@ import java.nio.channels.SocketChannel;
 
 /**
  * Classe qui crée un serveur en attende de connexion et qui fournit une méthode pour construire une instance de TcpSocket connectée à chaque client accepté.
- * @author 
+ * @author Shihui HUANG
  *
  */
 public class TcpServer  implements AutoCloseable {

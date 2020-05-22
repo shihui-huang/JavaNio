@@ -80,7 +80,6 @@ public class AppliRpcClient {
                     break;
                 default:
                     System.out.println("param: add or multipli. add: val1 + val2. multipli: (val1 + i val2) * (val3 + i val4)");
-                    return;
             }
         }else if (id.equals("LIST")){
             RpcClient rpcClient = new RpcClient(serverHost, serverPort, id);

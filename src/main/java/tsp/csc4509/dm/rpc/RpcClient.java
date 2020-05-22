@@ -1,11 +1,9 @@
 package tsp.csc4509.dm.rpc;
-import static tsp.csc4509.dm.common.Log.COMM;
-import static tsp.csc4509.dm.common.Log.LOG_ON;
+
+import tsp.csc4509.dm.tcp.TcpSocket;
 
 import java.io.IOException;
 import java.io.Serializable;
-
-import tsp.csc4509.dm.tcp.TcpSocket;
 
 /**
  * Implémentation du client RPC.
@@ -46,16 +44,16 @@ public class RpcClient {
 
 		this.rpcParam = rpcParam;
 
-//	    connexion TCP au serveur « serverHost:serverPort » ;
+//	    connexion TCP au serveur « serverHost:serverPort »
 		TcpSocket tcpSocket = new TcpSocket(serverHost, serverPort);
 
-//		construction d'un objet RpcRequest en utilisant les paramètres du constructeur ;
+//		construction d'un objet RpcRequest en utilisant les paramètres du constructeur
 		RpcRequest rpcRequest = new RpcRequest(rpcId, rpcParamClass, rpcParam);
 
-//		envoi de cet objet au serveur ;
+//		envoi de cet objet au serveur
 		tcpSocket.sendObject(rpcRequest);
 
-//		réception de la réponse, qui est un objet de la classe  RpcReply ;
+//		réception de la réponse, qui est un objet de la classe  RpcReply
 	    rpcReply = (RpcReply) tcpSocket.receiveObject();
 
 //		fermeture de la connexion avec le serveur.
@@ -78,18 +76,17 @@ public class RpcClient {
 	 *                  l'exception sur le serveur RPC ne nous envoie pas un RpcReply. 
 	 */
 	public RpcClient(final String serverHost, final int serverPort, final String rpcId) throws IOException, ClassNotFoundException {
-		this.rpcParam = rpcParam;
 
-//	    connexion TCP au serveur « serverHost:serverPort » ;
+//	    connexion TCP au serveur « serverHost:serverPort »
 		TcpSocket tcpSocket = new TcpSocket(serverHost, serverPort);
 
-//		construction d'un objet RpcRequest en utilisant les paramètres du constructeur ;
+//		construction d'un objet RpcRequest en utilisant les paramètres du constructeur
 		RpcRequest rpcRequest = new RpcRequest(rpcId);
 
-//		envoi de cet objet au serveur ;
+//		envoi de cet objet au serveur
 		tcpSocket.sendObject(rpcRequest);
 
-//		réception de la réponse, qui est un objet de la classe  RpcReply ;
+//		réception de la réponse, qui est un objet de la classe  RpcReply
 		rpcReply = (RpcReply) tcpSocket.receiveObject();
 
 //		fermeture de la connexion avec le serveur.
