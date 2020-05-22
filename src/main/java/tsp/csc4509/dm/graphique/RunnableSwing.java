@@ -1,6 +1,7 @@
 package tsp.csc4509.dm.graphique;
 
 import javax.swing.JFrame;
+import java.io.IOException;
 
 /**
  * Une tâche envoyée au Thread de Swing.
@@ -35,9 +36,16 @@ public class RunnableSwing implements Runnable {
 	@Override
 	public void run() {
 	        JFrame frame = new JFrame("Mandelbrot");
-	        WindowSwing panel = new WindowSwing(hostname, port);
+			WindowSwing panel = null;
+			try {
+				panel = new WindowSwing(hostname, port);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 
-	        frame.add(panel);
+			frame.add(panel);
 	        frame.pack();
 	        frame.setVisible(true);
 	        frame.setResizable(false);

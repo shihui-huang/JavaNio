@@ -7,10 +7,16 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.Serializable;
 import javax.swing.JPanel;
 
 import tsp.csc4509.dm.mandelbrot.CoordMandelbrot;
 import tsp.csc4509.dm.mandelbrot.Mandelbrot;
+import tsp.csc4509.dm.rpc.RpcClient;
+import tsp.csc4509.dm.rpc.RpcParam;
+import tsp.csc4509.dm.rpc.RpcServer;
+import tsp.csc4509.dm.rpcparam.MandelbrotParam;
 
 /**
  * Classe qui calcul et affiche l'image de Mandelbrot.
@@ -19,9 +25,10 @@ import tsp.csc4509.dm.mandelbrot.Mandelbrot;
  */
 public class WindowSwing extends JPanel {
 
-	private final static int NBSECTIONS = 5; 
-	
-    private BufferedImage canvas;
+	private final static int NBSECTIONS = 5;
+
+
+	private BufferedImage canvas;
 
     /**
      * Contructeur de Panel
@@ -30,7 +37,7 @@ public class WindowSwing extends JPanel {
      * @param port
      *        numéro du port TCP du serveur RPC.
      */
-    public WindowSwing(String hostname, int port) {
+    public WindowSwing(String hostname, int port) throws IOException, ClassNotFoundException {
     	// une image au hasard parmi les images prédéfinies
     	int indImage = (int) (Math.random() * IMAGES.length); 
     	
@@ -47,7 +54,10 @@ public class WindowSwing extends JPanel {
 			
 			// ************************************************************
 			// Ici se trouve le calcul à déporter sur le serveur RPC
-		    Mandelbrot mandelbrotSection = new Mandelbrot(coordSection);
+			RpcParam mandelbrotParam = new MandelbrotParam(coordSection);
+			RpcClient rpcClient = new RpcClient(hostname,port,"COMPUTE", mandelbrotParam.getClass(),mandelbrotParam);
+			Mandelbrot mandelbrotSection = (Mandelbrot) rpcClient.getResult();
+
 			//*************************************************************
 			
 			// transformation des entiers de chaque point de l'espace en couleur.

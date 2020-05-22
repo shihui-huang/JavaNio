@@ -2,6 +2,7 @@ package tsp.csc4509.dm.rpc;
 
 
 import tsp.csc4509.dm.rpcparam.AdditionParam;
+import tsp.csc4509.dm.rpcparam.MandelbrotParam;
 import tsp.csc4509.dm.rpcparam.MultiplicationParam;
 import tsp.csc4509.dm.rpcparam.MultiplicationComplexeParam;
 
@@ -22,9 +23,13 @@ public enum RpcParamList {
 	/**
 	 * Multiplication de deux complexes.
 	 */
-	MULTIPLICATIONCOMPLEXE(MultiplicationComplexeParam.class, "Multiplication de deux complexes");
-	
-	
+	MULTIPLICATIONCOMPLEXE(MultiplicationComplexeParam.class, "Multiplication de deux complexes"),
+	/**
+	 * Mandelbrot.
+	 */
+	MANDELBROT(MandelbrotParam.class, "mandelbrot");
+
+
 	/**
 	 * Classe transportant les paramêtres du RCP COMPUTE.
 	 */
