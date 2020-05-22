@@ -1,9 +1,7 @@
 package tsp.csc4509.dm.appli;
 
 import tsp.csc4509.dm.tcp.TcpSocket;
-
 import java.io.IOException;
-import java.io.Serializable;
 import java.nio.ByteBuffer;
 
 
@@ -29,41 +27,41 @@ public class AppliClientTcp {
 			System.out.println("usage: java AppliClientTcp <machine> <port>");
 			return;
 		}
-		
+
 		// se connecter au serveur argv[0] = machine du seveur, argv[1] = port du serveur
 		TcpSocket tcpSocket = new TcpSocket(argv[HOSTARG], Integer.parseInt(argv[PORTARG]));
-		
-		// envoyer une chaîne de caractère au serveur.
-		/* Astuce: la méthode getBytes() de String retourne un tableau de byte contenant les octets de la chaîne de caractères.
-		           String exemple = "toto";  byte [] exempleByte = exemple.getBytes(); */
+
+		// envoyer une chaîne de caractère au serveur
+		/*
+		Astuce: la méthode getBytes() de String retourne un tableau de byte contenant les octets de la chaîne de caractères
+		           String exemple = "toto";  byte [] exempleByte = exemple.getBytes()
+		*/
 		String exemple = "toto";
 		byte[] exempleByte = exemple.getBytes();
 		ByteBuffer buffer = ByteBuffer.allocate(exempleByte.length);
 		buffer.put(exempleByte);
 		tcpSocket.sendBuffer(buffer);
-		
+
 		// lire et afficher la chaîne de caractères que le serveur nous a envoyé en echo
-	    /*	Attention: la méthode receiveBuffer() de TcpSocket ne se termine que lorsque la connexion est fermée ou que
+	    /*
+	    Attention: la méthode receiveBuffer() de TcpSocket ne se termine que lorsque la connexion est fermée ou que
 		 le buffer est rempli. Comme le serveur ne fermera pas sa connexion prévoyez un buffer de réception ayant
 		 exactement la bonne taille.
 		 Atuce: pour transformer le contenu d'un ByteBuffer en String, il faut d'abord le transformer en tableau de bytes
 		        et ensuite construire une chaîne de caratères avec:
-		String exemple = new String(buffer.array());	*/
+		String exemple = new String(buffer.array())
+		*/
 		buffer.clear();
 		tcpSocket.receiveBuffer(buffer);
 		System.out.println(new String(buffer.array()));
-		
-		//  envoyer un entier au serveur.
+
+		//  envoyer un entier au serveur
 		tcpSocket.sendSize(40);
 
-		//TODO  lire et afficher l'entier que le serveur nous a envoyé en echo
-//		System.out.println( tcpSocket.receiveSize());
-//		tcpSocket.close();
+		//lire et afficher l'entier que le serveur nous a envoyé en echo
+		System.out.println(tcpSocket.receiveSize());
 
-		//envoie un objet à une application serveur.
-		Person mike = new Person("mike",20);
-		tcpSocket.sendObject(mike);
-
+		tcpSocket.close();
 	}
 	
 

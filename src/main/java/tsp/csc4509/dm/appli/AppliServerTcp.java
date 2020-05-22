@@ -25,19 +25,16 @@ public class AppliServerTcp {
 			System.out.println("usage: java AppliClientTcp <machine> <port>");
 			return;
 		}
-		
+
 		// créer un serveur TCP en attente sur le port contenu dans argv[0].
 		TcpServer tcpServer = new TcpServer(Integer.parseInt(argv[PORTARG]));
-		
 		// accepter un client.
 		TcpSocket tcpSocket = tcpServer.acceptClient();
-		
-		// TODO renvoyer en echo tout ce que le client éccrit jusqu'à sa déconnexion.
+		// renvoyer en echo tout ce que le client éccrit jusqu'à sa déconnexion.
+		tcpSocket.echo();
 
-		//receive un object
-		Person person;
-		person = (Person) tcpSocket.receiveObject();
-		System.out.println(person.getName() == "mike");
+		tcpSocket.close();
+		tcpServer.close();
 	}
 	
 	

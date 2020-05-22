@@ -28,7 +28,7 @@ public class TcpSocket  implements AutoCloseable {
 	 * @param rwChan 
 	 *              le canal déjà connecté suite à l'accept.
 	 */
-	public TcpSocket(SocketChannel rwChan) {
+	public TcpSocket(final SocketChannel rwChan) {
 		 this.rwChan = rwChan;
 	}
 	
@@ -41,7 +41,7 @@ public class TcpSocket  implements AutoCloseable {
 	 * @throws IOException
 	 *                  toutes les exceptions d'entrées/sorties.
 	 */
-	public TcpSocket(String serverHost, int serverPort) throws IOException {
+	public TcpSocket(final String serverHost, final int serverPort) throws IOException {
 		InetAddress servAddr = InetAddress.getByName(serverHost);
 		InetSocketAddress servSockAddr = new InetSocketAddress(servAddr, serverPort);
 		rwChan = SocketChannel.open(servSockAddr);
@@ -56,7 +56,7 @@ public class TcpSocket  implements AutoCloseable {
 	 * @throws IOException
 	 *                  toutes les exceptions d'entrées/sorties.
 	 */
-	public int sendBuffer(ByteBuffer buffer) throws IOException {
+	public int sendBuffer(final ByteBuffer buffer) throws IOException {
 		buffer.flip();
 		return rwChan.write(buffer);
 	}
@@ -162,14 +162,14 @@ public class TcpSocket  implements AutoCloseable {
 		//recevoir un entier qui contient la taille de l'objet sérialisé ;
 			int size = receiveSize();
 
-		//allouer un ByteBuffer faisant exactement cette taille ;
+		//allouer un ByteBuffer faisant exactement cette taille
 			ByteBuffer buffer = ByteBuffer.allocate(size);
 
-		//recevoir des octets du réseau jusqu'à remplir ce buffer ;
+		//recevoir des octets du réseau jusqu'à remplir ce buffer
 		receiveBuffer(buffer);
 
 
-		//extraire les données de ce buffer et les désérialiser.
+		//extraire les données de ce buffer et les désérialiser
 		Serializable reference = null;
 		ByteArrayInputStream bi = new ByteArrayInputStream(buffer.array());
 		ObjectInputStream oi = new ObjectInputStream(bi);
@@ -182,6 +182,8 @@ public class TcpSocket  implements AutoCloseable {
 	
 	@Override
 	public void close() throws IOException {
+		rwChan.shutdownInput();
+		rwChan.shutdownOutput();
 		rwChan.close();
 	}
 	
@@ -194,15 +196,19 @@ public class TcpSocket  implements AutoCloseable {
 	 *        toutes les exceptions d'entrées/sorties.
 	 */
 	public int echo() throws IOException {
-		int totalReveice = 0;
 		int receive;
+		int totalReveice = 0;
 		ByteBuffer buffer = ByteBuffer.allocate(1024);
-		receive = receiveBuffer(buffer);
-		while (receive > 0){
-			totalReveice += receive;
-			receive = receiveBuffer(buffer);
-		}
+		do{
+			buffer.clear();
+			receive = rwChan.read(buffer);
+			if (receive > 0){
+				sendBuffer(buffer);
+				totalReveice += receive;
+			}
+		} while(receive > 0);
+
 		return totalReveice;
 	}
-	
+
 }
